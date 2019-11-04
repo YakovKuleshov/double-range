@@ -1,0 +1,266 @@
+<dom-module id="double-range">
+	<template>
+		<style>
+			:host {
+				user-select: none;
+				display: block;
+				font-family: 'latoRegular', sans-serif;
+			}
+
+			.inputs__wrapper {
+				display: flex;
+				justify-content: var(--inputs_jContent, space-between);
+			}
+
+			input {
+				width: var(--inputs_width, 25%);
+				outline: none;
+				padding-left: var(--inputs_padding_left, 10px);
+				padding-right: var(--inputs_padding_right, 10px);
+				height: var(--inputs_height, 40px);
+				border: var(--inputs_border, none);
+				border-radius: var(--inputs_bRadius, 5px);
+				font-size: var(--inputs_font_size, 19px);
+				color: var(--inputs_color, #333);
+				text-align: center;
+			}
+
+			input::placeholder {
+				font-size: var(--placeholder_font_size, 16px);
+				color: var(--placeholder_color, #ccc);
+			}
+
+			.range {
+				cursor: pointer;
+				position: relative;
+				height: var(--range_height, 5px);
+				border-radius: var(--range_border_radius, 2px);
+				margin-top: var(--range_margin_top, 65px);
+			}
+
+			.thumb {
+				cursor: pointer;
+				position: absolute;
+				width: var(--thumb_width, 30px);
+				height: var(--thumb_height, 30px);
+				border-radius: var(--thumb_border_radius, 50%);
+				top: 50%;
+				border: var(--thumb_border, none);
+				transform: translate(-50%, -50%);
+				box-shadow: var(--thumb_shadow, 2px 2px 4px rgba(0, 0, 0, .5));
+				background: var(--thumbs_bg, #07f);
+				background-size: cover;
+			}
+		</style>
+		<div class="inputs__wrapper">
+			<input class="min__input"
+				type="text"
+				placeholder="[[ minPlaceholder ]]"
+				value$="[[ replaceInputsValue(minValue) ]]"
+				on-blur="applayMinValOnFocusOut"
+				on-input="setMinVal"
+				on-keypress="applayMinVal">
+			<input class="max__input"
+				type="text"
+				placeholder="[[ maxPlaceholder ]]"
+				value$="[[ replaceInputsValue(maxValue) ]]"
+				on-blur="applayMaxValOnFocusOut"
+				on-input="setMaxVal"
+				on-keypress="applayMaxVal">
+		</div>
+		<div class="range" style$="background: -webkit-linear-gradient(left, [[ colors.0 ]] [[ minThumbLeft ]]%, [[ colors.1 ]] 0, [[ colors.2 ]] [[ maxThumbLeft ]]%, [[ colors.3 ]] 0%);" on-mousedown="setThumbsValues">
+			<div class="thumb min__thumb" style$="left: [[ minThumbLeft ]]%" on-mousedown="minmousedown"></div>
+			<div class="thumb max__thumb" style$="left: [[ maxThumbLeft ]]%" on-mousedown="maxmousedown"></div>
+		</div>
+	</template>
+	<script>
+		class DoubleRange extends Polymer.Element {
+			static get is() {
+				return 'double-range'
+			}
+
+			static get properties() {
+				return {
+					maxRangeValue: {
+						type: Number,
+						value: 5000
+					},
+					minPlaceholder: String,
+					maxPlaceholder: String,
+					colors: Array,
+					minValue: {
+						type: Object,
+						value: 1000,
+						notify: true
+					},
+					maxValue: {
+						type: Object,
+						value: 3500,
+						notify: true
+					}
+				}
+			}
+
+			static get observers() {
+				return [
+					'_observeMaxRangeValue(maxRangeValue)',
+					'_observeMinValue(minValue)',
+					'_observeMaxValue(maxValue)'
+				]
+			}
+
+			constructor() {
+				super()
+				this.minMove = this.minMove.bind(this)
+				this.maxMove = this.maxMove.bind(this)
+
+				window.addEventListener('mouseup', (() => {
+					window.removeEventListener('mousemove', this.minMove)
+					window.removeEventListener('mousemove', this.maxMove)
+				}))
+			}
+
+			_observeMaxRangeValue(value) {
+				this.set('minThumbLeft', 100 / value * this.minValue);
+				this.set('maxThumbLeft', 100 / value * this.maxValue);
+			}
+
+			_observeMinValue(minValue) {
+				this.set('minThumbLeft', 100 / this.maxRangeValue * minValue);
+			}
+
+			_observeMaxValue(maxValue) {
+				this.set('maxThumbLeft', 100 / this.maxRangeValue * maxValue);
+			}
+
+
+			minmousedown(e) {
+				window.addEventListener('mousemove', this.minMove);
+				e.stopPropagation()
+			}
+
+			minMove(e) {
+				let minInput = this.root.querySelector('.min__input');
+				let line = this.root.querySelector('.range');
+				let thumb = this.root.querySelector('.thumb');
+				let left = (e.pageX - line.getBoundingClientRect().left) * (100 / line.offsetWidth);
+				if (left < 0 || left > this.maxThumbLeft) return
+				this.set('minThumbLeft', left);
+				this.set('minValue', Math.round((this.maxRangeValue / 100) * this.minThumbLeft));
+				minInput.value = this.replaceInputsValue(this.minValue)
+			}
+
+			setMinVal(e) {
+				let maxInput = this.root.querySelector('.max__input');
+				let onlyNumbers = e.target.value.replace(/[^\d]/g, '');
+				let minValue = parseInt(e.target.value.replace(/\s/g, ''));
+				let maxValue = parseInt(maxInput.value.replace(/\s/g, ''));
+
+				e.target.value = this.replaceInputsValue(onlyNumbers);
+				if (minValue > maxValue) {
+					e.target.value = e.target.value.replace(/(\d)$/ig, '');
+				}
+			}
+
+			applayMinValOnFocusOut(e) {
+				let maxInput = this.root.querySelector('.max__input');
+				let minValue = parseInt(e.target.value.replace(/\s/g, ''));
+				let maxValue = parseInt(maxInput.value.replace(/\s/g, ''));
+
+				if (minValue >= 0 && minValue < maxValue) {
+					this.set('minValue', e.target.value.replace(/\s/g, ''));
+				}
+			}
+
+			applayMinVal(e) {
+				let maxInput = this.root.querySelector('.max__input');
+				let minValue = parseInt(e.target.value.replace(/\s/g, ''));
+				let maxValue = parseInt(maxInput.value.replace(/\s/g, ''));
+
+				if (e.keyCode == 13) {
+					if (minValue >= 0 && minValue < maxValue) {
+						this.set('minValue', e.target.value.replace(/\s/g, ''));
+					}
+				}
+			}
+
+			maxmousedown(e) {
+				window.addEventListener('mousemove', this.maxMove);
+				e.stopPropagation()
+			}
+
+			maxMove(e) {
+				let maxInput = this.root.querySelector('.max__input');
+				let line = this.root.querySelector('.range');
+				let thumb = this.root.querySelector('.thumb');
+				let left = (e.pageX - line.getBoundingClientRect().left) * (100 / line.offsetWidth);
+				if (left < this.minThumbLeft || left > 100) return
+				this.set('maxThumbLeft', left);
+				this.set('maxValue', Math.round(this.maxRangeValue / 100 * this.maxThumbLeft));
+				maxInput.value = this.replaceInputsValue(this.maxValue)
+			}
+
+			setMaxVal(e) {
+				let minInput = this.root.querySelector('.min__input');
+				let onlyNumbers = e.target.value.replace(/[^\d]/g, '');
+				e.target.value = this.replaceInputsValue(onlyNumbers);
+
+				if (parseInt(e.target.value.replace(/\s/g, '')) > this.maxRangeValue) {
+					e.target.value = e.target.value.replace(/(\d)$/ig, '');
+				}
+			}
+
+			applayMaxValOnFocusOut(e) {
+				let minInput = this.root.querySelector('.min__input');
+				let maxValue = parseInt(e.target.value.replace(/\s/g, ''));
+				let minValue = parseInt(minInput.value.replace(/\s/g, ''));
+
+				if (maxValue > minValue && maxValue <= this.maxRangeValue) {
+					this.set('maxValue', e.target.value.replace(/\s/g, ''))
+				}
+			}
+
+			applayMaxVal(e) {
+				let minInput = this.root.querySelector('.min__input');
+				let maxValue = parseInt(e.target.value.replace(/\s/g, ''));
+				let minValue = parseInt(minInput.value.replace(/\s/g, ''));
+				if (e.keyCode == 13) {
+					if (maxValue > minValue && maxValue <= this.maxRangeValue) {
+						this.set('maxValue', e.target.value.replace(/\s/g, ''))
+					}
+				}
+			}
+
+			setThumbsValues(e) {
+				let minInput = this.root.querySelector('.min__input');
+				let maxInput = this.root.querySelector('.max__input');
+				let line = this.root.querySelector('.range');
+				let left = (e.pageX - line.getBoundingClientRect().left) * (100 / line.offsetWidth);
+
+				if (left < (this.maxThumbLeft - this.minThumbLeft) / 2 + this.minThumbLeft) {
+					this.set('minThumbLeft', left);
+					this.set('minValue', Math.round(this.maxRangeValue / 100 * this.minThumbLeft));
+					minInput.value = this.replaceInputsValue(this.minValue)
+				}
+				else {
+					this.set('maxThumbLeft', left);
+					this.set('maxValue', Math.round(this.maxRangeValue / 100 * this.maxThumbLeft));
+					maxInput.value = this.replaceInputsValue(this.maxValue)
+				}
+			}
+
+			replaceInputsValue(value) {
+				return value.toString().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
+			}
+
+			connectedCallback() {
+				super.connectedCallback();
+			}
+
+			disconnectedCallback() {
+				super.disconnectedCallback();
+			}
+		}
+		window.customElements.define(DoubleRange.is, DoubleRange);
+	</script>
+</dom-module>
