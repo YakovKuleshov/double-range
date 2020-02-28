@@ -1,0 +1,147 @@
+{
+	"console_log": {
+		"scope": "javascript,typescript",
+		"prefix": "l",
+		"body": [
+			"console.log($1);"
+		]
+	},
+	"querySelector": {
+		"scope": "javascript,typescript",
+		"prefix": "q",
+		"body": [
+			"this.root.querySelector('$1')"
+		]
+	},
+	"render": {
+		"scope": "javascript,typescript",
+		"prefix": "a",
+		"body": [
+			"Polymer.RenderStatus.afterNextRender(this, () => {",
+			"$1",
+			"})"
+		]
+	},
+	"dom_repeat": {
+		"scope": "html",
+		"prefix": "r",
+		"body": [
+			"<template is=\"dom-repeat\" items=\"[[ $1 ]]\">",
+			"",
+			"</template>"
+		]
+	},
+	"dom_if": {
+		"scope": "html",
+		"prefix": "f",
+		"body": [
+			"<template is=\"dom-if\" if=\"[[ $1 ]]\">",
+			"",
+			"</template>"
+		]
+	},
+	"component": {
+		"scope": "html",
+		"prefix": "w",
+		"body": [
+			"<dom-module id=\"$1\">",
+			"\t<template>",
+			"\t\t<style>",
+			"\t\t\t:host {",
+			"\t\t\t\tdisplay: block;",
+			"\t\t\t\tuser-select: none;",
+			"\t\t\t\tfont-family: 'latoRegular', sans-serif;",
+			"\t\t\t}",
+			"",
+			"\t\t\tdom-if, dom-repeat {",
+			"\t\t\t\tdisplay: none",
+			"\t\t\t}",
+			"",
+			"\t\t</style>",
+			"\t</template>",
+			"\t<script>",
+			"",
+			"\t\tclass Xxx extends Polymer.Element {",
+			"",
+			"\t\t\tstatic get is() {",
+			"\t\t\t\treturn \"$2\"",
+			"\t\t\t}",
+			"",
+			"\t\t\tstatic get properties() {",
+			"\t\t\t\treturn {",
+			"\t\t\t\t}",
+			"\t\t\t}",
+			"",
+			"\t\t\tconstructor() {",
+			"\t\t\t\tsuper()",
+			"\t\t\t}",
+			"",
+			"\t\t\tconnectedCallback() {",
+			"\t\t\t\tsuper.connectedCallback()",
+			"\t\t\t}",
+			"",
+			"\t\t\tdisConnectedCallback() {",
+			"\t\t\t\tsuper.disConnectedCallback()",
+			"\t\t\t}",
+			"\t\t}",
+			"",
+			"\t\twindow.customElements.define(Xxx.is, Xxx);",
+			"\t</script>",
+			"</dom-module>",
+			"$2"
+		]
+	},
+	"prop": {
+		"scope": "javascript,typescript",
+		"prefix": "e",
+		"body": [
+			"prop: {",
+			"\ttype: Object,",
+			"\tvalue: {},",
+			"\tobserver: \"_observe\",",
+			"\tnotify: true",
+			"},"
+		]
+	},
+	"cb": {
+		"scope": "javascript,typescript",
+		"prefix": "cb",
+		"body": [
+			"callback: {",
+			"\ttype: Object,",
+			"\tvalue: function(data, id) {",
+			"\t\treturn (data, id) => {",
+			"\t\t\tthis.func()",
+			"\t\t}",
+			"\t}",
+			"},"
+		]
+	},
+	"fetch": {
+		"scope": "javascript,typescript",
+		"prefix": "t",
+		"body": [
+			"fetch(this.config.api_domain + '', {",
+			"\tmethod: 'GET',",
+			"\theaders: new Headers({",
+			"\t\t'Accept': 'application/json',",
+			"\t\t'Content-Type': 'application/json; charset=utf-8',",
+			"\t\tsession: this._getCookieSessionId()",
+			"\t})",
+			"}).then((response) => {",
+			"\treturn response.json();",
+			"}).then((data) => {",
+			"$1",
+			"});"
+		]
+	},
+	"absolute": {
+		"scope": "css",
+		"prefix": "b",
+		"body": [
+			"top: 50%;",
+			"left: 50%;",
+			"transform: translate(-50%, -50%);"
+		]
+	}
+}
