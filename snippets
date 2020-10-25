@@ -1,9 +1,9 @@
 {
 	"console_log": {
-		"scope": "javascript,typescript",
+		"scope": "javascript",
 		"prefix": "l",
 		"body": [
-			"console.log($1);"
+			"console.log($1)"
 		]
 	},
 	"querySelector": {
@@ -23,25 +23,21 @@
 		]
 	},
 	"dom_repeat": {
-		"scope": "html",
+		"scope": "",
 		"prefix": "r",
 		"body": [
-			"<template is=\"dom-repeat\" items=\"[[ $1 ]]\">",
-			"",
-			"</template>"
+			"<template is=\"dom-repeat\" items=\"[[ $1 ]]\"></template>"
 		]
 	},
 	"dom_if": {
-		"scope": "html",
+		"scope": "",
 		"prefix": "f",
 		"body": [
-			"<template is=\"dom-if\" if=\"[[ $1 ]]\">",
-			"",
-			"</template>"
+			"<template is=\"dom-if\" if=\"[[ $1 ]]\"></template>"
 		]
 	},
 	"component": {
-		"scope": "html",
+		"scope": "",
 		"prefix": "w",
 		"body": [
 			"<dom-module id=\"$1\">",
@@ -130,18 +126,105 @@
 			"\t})",
 			"}).then((response) => {",
 			"\treturn response.json();",
-			"}).then((data) => {",
+			"}).then(res => {",
 			"$1",
 			"});"
 		]
 	},
 	"absolute": {
-		"scope": "css",
+		"scope": "",
 		"prefix": "b",
 		"body": [
 			"top: 50%;",
 			"left: 50%;",
 			"transform: translate(-50%, -50%);"
+		]
+	},
+	"div": {
+		"scope": "",
+		"prefix": ".",
+		"body": [
+			"<div class=\"$1\">$2</div>"
+		]
+	},
+	"htmComment": {
+		"scope": "",
+		"prefix": "h",
+		"body": [
+			"/*html*/"
+		]
+	},
+	"dropdown": {
+		"scope": "",
+		"prefix": "drop",
+		"body": [
+			"<div class=\"select\">Value",
+			"\t<div class=\"dropdown\">",
+			"\t\t<div class=\"dropdown__item\">item</div>",
+			"\t</div>",
+			"</div>"
+		]
+	},
+	"dropdownCss": {
+		"scope": "",
+		"prefix": "dss",
+		"body": [
+			".select {",
+			"\twidth: 200px;",
+			"\theight: 40px;",
+			"\tborder-radius: 5px;",
+			"\tborder: 1px solid #ccc;",
+			"\tbackground: #fff;",
+			"\tline-height: 40px;",
+			"\tpadding: 0 10px;",
+			"\tposition: relative;",
+			"\tcursor: pointer;",
+			"}",
+			"",
+			".dropdown {",
+			"\tposition: absolute;",
+			"\tbackground: #fff;",
+			"\twidth: 100%;",
+			"\tleft: 0;",
+			"\tline-height: normal;",
+			"\tmax-height: 200px;",
+			"\toverflow-y: auto;",
+			"}",
+			"",
+			".dropdown::-webkit-scrollbar {",
+			"\twidth: 5px;",
+			"}",
+			"",
+			".dropdown::-webkit-scrollbar-thumb {",
+			"\tbackground: #ccc;",
+			"\tborder-radius: 5px;",
+			"}",
+			"",
+			".dropdown__item {",
+			"\tpadding: 10px;",
+			"}",
+			"",
+			".dropdown__item:hover {",
+			"\tbackground: #f0f0f0;",
+			"}"
+		]
+	},
+	"hasItems": {
+		"scope": "",
+		"prefix": "has",
+		"body": [
+			"hasItems(arr) {",
+			"\treturn arr && arr.length",
+			"}"
+		]
+	},
+	"isEqual": {
+		"scope": "",
+		"prefix": "eq",
+		"body": [
+			"isEqual(val1, val2) {",
+			"\treturn val1 == val2",
+			"}"
 		]
 	}
 }
