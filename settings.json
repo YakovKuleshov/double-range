@@ -1,0 +1,108 @@
+{
+  "liveServer.settings.donotVerifyTags": true,
+  "editor.fontFamily": "droid sans mono",
+  "editor.mouseWheelZoom": true,
+  "liveServer.settings.donotShowInfoMsg": true,
+  "editor.tabSize": 3,
+  "vetur.format.options.tabSize": 3,
+  "vetur.format.options.useTabs": false,
+  "vetur.format.defaultFormatterOptions": {},
+  "files.associations": {
+    "*.html": "html",
+    "*.vue": "vue",
+    "*.js": "javascript"
+  },
+  "editor.suggestFontSize": 15,
+  "editor.fontSize": 15.5,
+  "editor.lineHeight": 30,
+  "editor.multiCursorModifier": "ctrlCmd",
+  "workbench.colorCustomizations": {
+    "tab.activeBackground": "#141414",
+    "editor.background": "#272727"
+  },
+  "editor.tokenColorCustomizations": {
+    "[Monokai Pro (Filter Spectrum)]": {
+      "strings": "#d6bd69",
+      "textMateRules": [
+        {
+          "scope": "variable.language.this",
+          "settings": {
+            "foreground": "#8a8989",
+            "fontStyle": ""
+          }
+        },
+        {
+          "scope": "entity.name.tag",
+          "settings": {
+            "fontStyle": "",
+            "foreground": "#f56f6f"
+          }
+        },
+        {
+          "name": "Tag attribute",
+          "scope": "entity.other.attribute-name",
+          "settings": {
+            "fontStyle": "",
+            "foreground": "#5dc8cf"
+          }
+        },
+        {
+          "scope": [
+            "support.type.vendored.property-name",
+            "support.type.property-name",
+            "variable.css",
+            "variable.scss",
+            "variable.other.less",
+            "source.coffee.embedded"
+          ],
+          "settings": {
+            "foreground": "#7491bd"
+          }
+        },
+        {
+          "name": "CSS Property Value",
+          "scope": "meta.property-group support.constant.property-value.css, meta.property-value support.constant.property-value.css",
+          "settings": {
+            "fontStyle": "",
+            "foreground": "#7491bd"
+          }
+        },
+        {
+          "name": "html Tags",
+          "scope": "punctuation.definition.tag.html, punctuation.definition.tag.begin, punctuation.definition.tag.end",
+          "settings": {
+            "fontStyle": "",
+            "foreground": "#979797"
+          }
+        },
+        {
+          "name": "Function Call Variable",
+          "scope": "variable.other.property",
+          "settings": {
+            "fontStyle": "",
+            "foreground": "#89b3bd"
+          }
+        }
+      ]
+    }
+  },
+  "html.format.wrapLineLength": 0,
+  "css.lint.duplicateProperties": "warning",
+  "editor.wordWrap": "on",
+  "emmet.showSuggestionsAsSnippets": true,
+  "editor.minimap.enabled": true,
+  "editor.renderWhitespace": "none",
+  "breadcrumbs.enabled": false,
+  "workbench.editor.closeEmptyGroups": false,
+  "emmet.includeLanguages": {
+    "javascript": "css"
+  },
+  "settingsSync.ignoredSettings": [],
+  "editor.fontWeight": "100",
+  "html.format.contentUnformatted": "",
+  "editor.codeActionsOnSave": null,
+  "workbench.colorTheme": "Monokai Pro (Filter Spectrum)",
+  "window.zoomLevel": -0.5,
+  "editor.renderControlCharacters": false,
+  "editor.formatOnSave": true
+}
