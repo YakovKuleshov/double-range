@@ -82,6 +82,18 @@
             "fontStyle": "",
             "foreground": "#89b3bd"
           }
+        },
+        {
+          "scope": "storage.type.function.js",
+          "settings": {
+            "fontStyle": "normal"
+          }
+        },
+        {
+          "scope": "storage.type.js",
+          "settings": {
+            "fontStyle": "normal",
+          }
         }
       ]
     }
